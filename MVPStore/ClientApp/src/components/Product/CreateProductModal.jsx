@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 import { Button, Form, Modal } from 'semantic-ui-react';
 import axios from 'axios';
+// import NumberFormat from 'react-number-format';
 
-const CreateCustomerModal = (Props) => {
 
-  const {fetchCustomers} = Props;
+const CreateProductModal = (Props) => {
+
+  const {fetchProducts} = Props;
 
   const [name,setName] = useState("");
-  const [address,setAddress] = useState("");
+  const [price,setPrice] = useState(0.00);
 
   const [open, setOpen] = useState(false);
 
   const [nameErrors,setNameErrors] = useState({});
-  const [addressErrors,setAddressErrors] = useState({});
+  const [priceErrors,setPriceErrors] = useState({});
 
-  const createCustomer = () => {
-    axios.post("customers/postcustomer", {
+  const createProduct = () => {
+    axios.post("products/postproduct", {
       name: name,
-      address: address
+      price: price
     })
     .then((res) => {
       //reset views
@@ -30,7 +32,7 @@ const CreateCustomerModal = (Props) => {
 
   const formValidation = () => { 
     const nameErrors = {};
-    const addressErrors = {};
+    const priceErrors = {};
     let isValid = true;
     if (name.trim().length < 5) {
       nameErrors.name = "Name should be at least 5 characters.";
@@ -40,26 +42,26 @@ const CreateCustomerModal = (Props) => {
       nameErrors.name = "Name cannot be more than 100 characters.";
       isValid = false;
     } 
-    if (address.trim().length < 5) {
-      addressErrors.address = "Address should be at least 5 characters.";
+    if (price < 0) {
+      priceErrors.price = "Price cannot be negative.";
       isValid = false;
     } else
-    if (address.trim().length > 150) {
-      addressErrors.address = "Address cannot be more than 150 characters.";
+    if (price > 99999999.99) {
+      priceErrors.price = "Maximum price is 99999999.99.";
       isValid = false;
-    }
+    } 
     
     setNameErrors(nameErrors);
-    setAddressErrors(addressErrors);
+    setPriceErrors(priceErrors);
     return isValid;
   } 
 
   const refreshViews = () => {
-    fetchCustomers();
+    fetchProducts();
     setName("");
-    setAddress("");
+    setPrice(0.00);
     setNameErrors({});
-    setAddressErrors({});
+    setPriceErrors({});
     setOpen(false);
   } 
 
@@ -68,15 +70,15 @@ const CreateCustomerModal = (Props) => {
     onClose={() => setOpen(false)}
     onOpen={() => setOpen(true)}
     open={open}
-    trigger={<Button color="blue"><i className="plus icon"></i>New Customer</Button>}
+    trigger={<Button color="blue"><i className="plus icon"></i>New Product</Button>}
     >
-      <Modal.Header>Create Customer</Modal.Header>
+      <Modal.Header>Create Product</Modal.Header>
       <Modal.Content>
         <Form>
           <div className='form-group'>
           <Form.Field>
               <label>Name</label>
-              <input name='name' placeholder='Enter Customer Name' onChange={(e) => setName(e.target.value)}/>
+              <input name='name' placeholder='Enter Product Name' onChange={(e) => setName(e.target.value)}/>
               {Object.keys(nameErrors).map((i) => { 
                 return <div style={{color:"red"}}>{nameErrors[i]}</div>
               })}
@@ -84,10 +86,11 @@ const CreateCustomerModal = (Props) => {
           </div>
           <div className='form-group'>
             <Form.Field>
-              <label>Address</label>
-              <input name='address' placeholder='Enter Customer Address' onChange={(e) => setAddress(e.target.value)}/>
-              {Object.keys(addressErrors).map((i) => { 
-                return <div style={{color:"red"}}>{addressErrors[i]}</div>
+              <label>Price</label>
+              {/* <NumberFormat placeholder='0.00' thousandSeparator={true} prefix={'$'} onChange={(e) => setPrice(e.target.value)} /> */}
+              <input name='price' placeholder='Enter Product Price' onChange={(e) => setPrice(e.target.value)}/>
+              {Object.keys(priceErrors).map((i) => { 
+                return <div style={{color:"red"}}>{priceErrors[i]}</div>
               })}
             </Form.Field>
           </div>
@@ -95,10 +98,10 @@ const CreateCustomerModal = (Props) => {
       </Modal.Content>
       <Modal.Actions>
         <Button onClick={refreshViews}>Cancel</Button>
-        <Button color="blue" onClick={createCustomer}><i className="save icon"></i>Submit</Button>
+        <Button color="blue" onClick={createProduct}><i className="save icon"></i>Submit</Button>
       </Modal.Actions>
     </Modal>
   )
 }
 
-export default CreateCustomerModal;
+export default CreateProductModal;

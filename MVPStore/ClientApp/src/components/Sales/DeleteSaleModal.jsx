@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Button, Form, Modal } from 'semantic-ui-react';
 import axios from 'axios';
 
-const DeleteCustomerModal = (Props) => {
+const DeleteSaleModal = (Props) => {
 
-  const {Customer,fetchCustomers} = Props;
+  const {Customer,fetchSales} = Props;
 
   const [open, setOpen] = useState(false);
 
@@ -12,11 +12,11 @@ const DeleteCustomerModal = (Props) => {
         axios 
         .delete(`/customers/DeleteCustomer/${Customer.id}`)
         .then((res) => {
-            fetchCustomers();
+            fetchSales();
             setOpen(false);
         })
         .catch((err) => {
-            fetchCustomers();
+            fetchSales();
             setOpen(false);
         });
     }
@@ -49,4 +49,4 @@ const DeleteCustomerModal = (Props) => {
   )
 }
 
-export default DeleteCustomerModal;
+export default DeleteSaleModal;

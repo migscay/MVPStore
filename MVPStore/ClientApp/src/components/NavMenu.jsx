@@ -15,17 +15,36 @@ export class NavMenu extends Component {
     return (
       <Menu secondary>
         <Menu.Item
+          as={NavLink} to="/"
+          name='MVPStore'
+          active={activeItem === 'home'}
+          onClick={this.handleItemClick}
+        />
+        <Menu.Item
           as={NavLink} to="/customers"
           name='customers'
           active={activeItem === 'customers'}
           onClick={this.handleItemClick}
         />
         <Menu.Item
-          as={NavLink} to="/about"
-          name='about'
-          active={activeItem === 'about'}
+          as={NavLink} to="/products"
+          name='products'
+          active={activeItem === 'products'}
           onClick={this.handleItemClick}
         />
+        <Menu.Item
+          as={NavLink} to="/stores"
+          name='stores'
+          active={activeItem === 'stores'}
+          onClick={this.handleItemClick}
+        />
+        <Menu.Item
+          as={NavLink} to="/sales"
+          name='sales'
+          active={activeItem === 'sales'}
+          onClick={this.handleItemClick}
+        />
+
         <Menu.Item
           as={NavLink} to="/profile"
           name='my profile'

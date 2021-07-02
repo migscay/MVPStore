@@ -11,48 +11,48 @@ namespace MVPStore.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
-    public class CustomersController : ControllerBase
+    public class StoresController : ControllerBase
     {
         private readonly MVPStoreContext _context;
 
-        public CustomersController(MVPStoreContext context)
+        public StoresController(MVPStoreContext context)
         {
             _context = context;
         }
 
-        // GET: api/Customers
+        // GET: api/Stores
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomer()
+        public async Task<ActionResult<IEnumerable<Store>>> GetStore()
         {
-            return await _context.Customer.ToListAsync();
+            return await _context.Store.ToListAsync();
         }
 
-        // GET: api/Customers/5
+        // GET: api/Stores/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Customer>> GetCustomer(int id)
+        public async Task<ActionResult<Store>> GetStore(int id)
         {
-            var customer = await _context.Customer.FindAsync(id);
+            var store = await _context.Store.FindAsync(id);
 
-            if (customer == null)
+            if (store == null)
             {
                 return NotFound();
             }
 
-            return customer;
+            return store;
         }
 
-        // PUT: api/Customers/5
+        // PUT: api/Stores/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCustomer(int id, Customer customer)
+        public async Task<IActionResult> PutStore(int id, Store store)
         {
-            if (id != customer.Id || !ModelState.IsValid)
+            if (id != store.Id || !ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            _context.Entry(customer).State = EntityState.Modified;
+            _context.Entry(store).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace MVPStore.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(id))
+                if (!StoreExists(id))
                 {
                     return NotFound();
                 }
@@ -73,41 +73,41 @@ namespace MVPStore.Controllers
             return NoContent();
         }
 
-        // POST: api/Customers
+        // POST: api/Stores
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
+        public async Task<ActionResult<Store>> PostStore(Store store)
         {
             if (ModelState.IsValid)
             {
-                _context.Customer.Add(customer);
+                _context.Store.Add(store);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
+                return CreatedAtAction("GetStore", new { id = store.Id }, store);
             }
             return BadRequest("Check data");
         }
 
-        // DELETE: api/Customers/5
+        // DELETE: api/Stores/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Customer>> DeleteCustomer(int id)
+        public async Task<ActionResult<Store>> DeleteStore(int id)
         {
-            var customer = await _context.Customer.FindAsync(id);
-            if (customer == null)
+            var store = await _context.Store.FindAsync(id);
+            if (store == null)
             {
                 return NotFound();
             }
 
-            _context.Customer.Remove(customer);
+            _context.Store.Remove(store);
             await _context.SaveChangesAsync();
 
-            return customer;
+            return store;
         }
 
-        private bool CustomerExists(int id)
+        private bool StoreExists(int id)
         {
-            return _context.Customer.Any(e => e.Id == id);
+            return _context.Store.Any(e => e.Id == id);
         }
     }
 }

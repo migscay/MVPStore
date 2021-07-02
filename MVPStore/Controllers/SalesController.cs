@@ -11,48 +11,48 @@ namespace MVPStore.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
-    public class CustomersController : ControllerBase
+    public class SalesController : ControllerBase
     {
         private readonly MVPStoreContext _context;
 
-        public CustomersController(MVPStoreContext context)
+        public SalesController(MVPStoreContext context)
         {
             _context = context;
         }
 
-        // GET: api/Customers
+        // GET: api/Sales
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomer()
+        public async Task<ActionResult<IEnumerable<Sales>>> GetSales()
         {
-            return await _context.Customer.ToListAsync();
+            return await _context.Sales.ToListAsync();
         }
 
-        // GET: api/Customers/5
+        // GET: api/Sales/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Customer>> GetCustomer(int id)
+        public async Task<ActionResult<Sales>> GetSales(int id)
         {
-            var customer = await _context.Customer.FindAsync(id);
+            var sales = await _context.Sales.FindAsync(id);
 
-            if (customer == null)
+            if (sales == null)
             {
                 return NotFound();
             }
 
-            return customer;
+            return sales;
         }
 
-        // PUT: api/Customers/5
+        // PUT: api/Sales/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCustomer(int id, Customer customer)
+        public async Task<IActionResult> PutSales(int id, Sales sales)
         {
-            if (id != customer.Id || !ModelState.IsValid)
+            if (id != sales.Id || !ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            _context.Entry(customer).State = EntityState.Modified;
+            _context.Entry(sales).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace MVPStore.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(id))
+                if (!SalesExists(id))
                 {
                     return NotFound();
                 }
@@ -73,41 +73,41 @@ namespace MVPStore.Controllers
             return NoContent();
         }
 
-        // POST: api/Customers
+        // POST: api/Sales
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
+        public async Task<ActionResult<Sales>> PostSales(Sales sales)
         {
             if (ModelState.IsValid)
             {
-                _context.Customer.Add(customer);
+                _context.Sales.Add(sales);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
+                return CreatedAtAction("GetSales", new { id = sales.Id }, sales);
             }
             return BadRequest("Check data");
         }
 
-        // DELETE: api/Customers/5
+        // DELETE: api/Sales/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Customer>> DeleteCustomer(int id)
+        public async Task<ActionResult<Sales>> DeleteSales(int id)
         {
-            var customer = await _context.Customer.FindAsync(id);
-            if (customer == null)
+            var sales = await _context.Sales.FindAsync(id);
+            if (sales == null)
             {
                 return NotFound();
             }
 
-            _context.Customer.Remove(customer);
+            _context.Sales.Remove(sales);
             await _context.SaveChangesAsync();
 
-            return customer;
+            return sales;
         }
 
-        private bool CustomerExists(int id)
+        private bool SalesExists(int id)
         {
-            return _context.Customer.Any(e => e.Id == id);
+            return _context.Sales.Any(e => e.Id == id);
         }
     }
 }

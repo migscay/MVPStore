@@ -2,25 +2,25 @@ import React, { useState } from 'react';
 import { Button, Form, Modal } from 'semantic-ui-react';
 import axios from 'axios';
 
-const EditCustomerModal = (Props) => {
+const EditStoreModal = (Props) => {
 
-  const {Customer,fetchCustomers} = Props;
+  const {Store,fetchStores} = Props;
 
-  const [name,setName] = useState(Customer.name);
-  const [address,setAddress] = useState(Customer.address);
+  const [name,setName] = useState(Store.name);
+  const [address,setAddress] = useState(Store.address);
   const [open, setOpen] = useState(false);
   const [nameErrors,setNameErrors] = useState({});
   const [addressErrors,setAddressErrors] = useState({});
 
-    const updateCustomer = () => {
+    const updateStore = () => {
         axios 
-        .put(`customers/PutCustomer/${Customer.id}`, {
-            id: Customer.id,
+        .put(`stores/PutStore/${Store.id}`, {
+            id: Store.id,
             name: name,
             address: address  
         })
         .then((res) => {
-            fetchCustomers();
+            fetchStores();
             setOpen(false);
         })
         .catch((err) => {
@@ -55,8 +55,8 @@ const EditCustomerModal = (Props) => {
     } 
   
     const resetViews = () => {
-      setName(Customer.name)
-      setAddress(Customer.address)
+      setName(Store.name)
+      setAddress(Store.address)
       setNameErrors({});
       setAddressErrors({});
       setOpen(false);
@@ -90,10 +90,10 @@ const EditCustomerModal = (Props) => {
       </Modal.Content>
       <Modal.Actions>
         <Button onClick={() => resetViews()}>Cancel</Button>
-        <Button color="yellow" onClick={updateCustomer}><i className="save icon"></i>Update Customer</Button>
+        <Button color="yellow" onClick={updateStore}><i className="save icon"></i>Update Store</Button>
       </Modal.Actions>
     </Modal>
   )
 }
 
-export default EditCustomerModal
+export default EditStoreModal;

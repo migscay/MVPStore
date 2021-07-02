@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Button, Form, Modal } from 'semantic-ui-react';
 import axios from 'axios';
 
-const CreateCustomerModal = (Props) => {
+const CreateStoreModal = (Props) => {
 
-  const {fetchCustomers} = Props;
+  const {fetchStores} = Props;
 
   const [name,setName] = useState("");
   const [address,setAddress] = useState("");
@@ -14,8 +14,8 @@ const CreateCustomerModal = (Props) => {
   const [nameErrors,setNameErrors] = useState({});
   const [addressErrors,setAddressErrors] = useState({});
 
-  const createCustomer = () => {
-    axios.post("customers/postcustomer", {
+  const createStore = () => {
+    axios.post("stores/poststore", {
       name: name,
       address: address
     })
@@ -55,7 +55,7 @@ const CreateCustomerModal = (Props) => {
   } 
 
   const refreshViews = () => {
-    fetchCustomers();
+    fetchStores();
     setName("");
     setAddress("");
     setNameErrors({});
@@ -68,15 +68,15 @@ const CreateCustomerModal = (Props) => {
     onClose={() => setOpen(false)}
     onOpen={() => setOpen(true)}
     open={open}
-    trigger={<Button color="blue"><i className="plus icon"></i>New Customer</Button>}
+    trigger={<Button color="blue"><i className="plus icon"></i>New Store</Button>}
     >
-      <Modal.Header>Create Customer</Modal.Header>
+      <Modal.Header>Create Store</Modal.Header>
       <Modal.Content>
         <Form>
           <div className='form-group'>
           <Form.Field>
               <label>Name</label>
-              <input name='name' placeholder='Enter Customer Name' onChange={(e) => setName(e.target.value)}/>
+              <input name='name' placeholder='Enter Store Name' onChange={(e) => setName(e.target.value)}/>
               {Object.keys(nameErrors).map((i) => { 
                 return <div style={{color:"red"}}>{nameErrors[i]}</div>
               })}
@@ -85,7 +85,7 @@ const CreateCustomerModal = (Props) => {
           <div className='form-group'>
             <Form.Field>
               <label>Address</label>
-              <input name='address' placeholder='Enter Customer Address' onChange={(e) => setAddress(e.target.value)}/>
+              <input name='address' placeholder='Enter Store Address' onChange={(e) => setAddress(e.target.value)}/>
               {Object.keys(addressErrors).map((i) => { 
                 return <div style={{color:"red"}}>{addressErrors[i]}</div>
               })}
@@ -95,10 +95,10 @@ const CreateCustomerModal = (Props) => {
       </Modal.Content>
       <Modal.Actions>
         <Button onClick={refreshViews}>Cancel</Button>
-        <Button color="blue" onClick={createCustomer}><i className="save icon"></i>Submit</Button>
+        <Button color="blue" onClick={createStore}><i className="save icon"></i>Submit</Button>
       </Modal.Actions>
     </Modal>
   )
 }
 
-export default CreateCustomerModal;
+export default CreateStoreModal;
