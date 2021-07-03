@@ -25,7 +25,10 @@ function Sales() {
         axios 
         .get("/customers/getCustomer")
         .then(({data}) => {
-            setCustomers(data);
+            setCustomers(data.map(customer => {
+                [].concat({key: customer.id, value: customer.name})
+            }));
+            console.log(`fetchCustomers ${Customers}`);
         })
         .catch((err) => {
             console.log(err);

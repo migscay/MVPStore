@@ -5,13 +5,12 @@ import CreateSalesModal from './CreateSalesModal';
 
 function Sales() {
 
-    const [Customers, setCustomers] = useState([]);
     const [Sales, setSales] = useState([]);
+
 
     useEffect(() => {
         fetchSales();
-        fetchCustomers();
-    },[]);
+     },[]);
  
     const fetchSales = () => {
         axios 
@@ -24,21 +23,10 @@ function Sales() {
         });
     }; 
 
-    const fetchCustomers = () => {
-        axios 
-        .get("/customers/getCustomer")
-        .then(({data}) => {
-            setCustomers(data);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-    }; 
-
     return (
         <div>
-            <CreateSalesModal Customers={Customers} fetchSales={fetchSales}/>
-            <SalesTable Customers={Customers} Sales={Sales} fetchSales={fetchSales}/>
+            <CreateSalesModal fetchSales={fetchSales}/>
+            <SalesTable Sales={Sales} fetchSales={fetchSales}/>
         </div>
     )
 }

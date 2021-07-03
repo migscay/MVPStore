@@ -7,13 +7,29 @@ import axios from 'axios';
 
 const SalesTable = (Props) => {
 
-    const {Customers,Sales,fetchSales} = Props;
+    const {Sales,fetchSales} = Props;
     const [open, setOpen] = useState(false);
+    const [Customers, setCustomers] = useState([]);
 
     useEffect(() => {
-        console.log(Customers);
-        console.log(Sales);
+        fetchCustomers();
     },[]);
+    
+    const fetchCustomers = () => {
+        axios 
+        .get("/customers/getCustomer")
+        .then(({data}) => {
+            let customersFromApi = data.map(customer => {
+                return { value: customer.name, display: customer.name}
+            })             
+            console.log(customersFromApi);
+            setCustomers([{value: '', display: 'Select Customer'}].concat(customersFromApi));
+            console.log(Customers);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }; 
 
 
     return (
@@ -28,6 +44,10 @@ const SalesTable = (Props) => {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
+                    
+                    {/* {CustomerList = Customers.map(customer => 
+                        { return {key: customer.id, value: customer.name} })} */}
+
                     <Table.Row>
                         <Table.Cell>
                             <Dropdown
