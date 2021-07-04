@@ -7,10 +7,14 @@ function Sales() {
 
     const [Customers, setCustomers] = useState([]);
     const [Sales, setSales] = useState([]);
+    const [Products, setProducts] = useState([]);
+    const [Stores, setStores] = useState([]);
 
     useEffect(() => {
         fetchSales();
         fetchCustomers();
+        fetchProducts();
+        fetchStores();
     },[]);
  
     const fetchSales = () => {
@@ -35,10 +39,32 @@ function Sales() {
         });
     }; 
 
+    const fetchProducts = () => {
+        axios 
+        .get("/products/getProduct")
+        .then(({data}) => {
+            setProducts(data);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }; 
+
+    const fetchStores = () => {
+        axios 
+        .get("/stores/getStore")
+        .then(({data}) => {
+            setStores(data);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }; 
+
     return (
         <div>
-            <CreateSalesModal Customers={Customers} fetchSales={fetchSales}/>
-            <SalesTable Customers={Customers} Sales={Sales} fetchSales={fetchSales}/>
+            <CreateSalesModal Customers={Customers} Products={Products} Stores={Stores} fetchSales={fetchSales}/>
+            <SalesTable Customers={Customers} Products={Products} Stores={Stores} Sales={Sales} fetchSales={fetchSales}/>
         </div>
     )
 }
