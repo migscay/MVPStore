@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from 'react';
-import { Table,Dropdown } from 'semantic-ui-react';
+import React from 'react';
+import { Table } from 'semantic-ui-react';
 import EditSaleModal from './EditSaleModal';
 import DeleteSaleModal from './DeleteSaleModal';
 import moment from 'moment';
