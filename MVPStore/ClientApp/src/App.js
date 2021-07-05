@@ -17,13 +17,14 @@ export default class App extends Component {
   render () {
     return (
       <Layout>
-        <Route exact path='/' component={Home} />
+        {/* <Route exact path='/' component={Home} /> */}
+        <Route exact path='/' component={Customers} />
         <Route exact path='/Customers' component={Customers} />
         <Route exact path='/Products' component={Products} />
         <Route exact path='/Stores' component={Stores} />
         <Route exact path='/Sales' component={Sales} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
+        {/* <Route path='/counter' component={Counter} />
+        <Route path='/fetch-data' component={FetchData} /> */}
       </Layout>
     );
   }

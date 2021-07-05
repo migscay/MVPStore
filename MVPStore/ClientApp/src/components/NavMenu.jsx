@@ -14,12 +14,12 @@ export class NavMenu extends Component {
 
     return (
       <Menu secondary>
-        <Menu.Item
+        {/* <Menu.Item
           as={NavLink} to="/"
           name='MVPStore'
           active={activeItem === 'home'}
           onClick={this.handleItemClick}
-        />
+        /> */}
         <Menu.Item
           as={NavLink} to="/customers"
           name='customers'
@@ -44,13 +44,13 @@ export class NavMenu extends Component {
           active={activeItem === 'sales'}
           onClick={this.handleItemClick}
         />
-
+{/* 
         <Menu.Item
           as={NavLink} to="/profile"
           name='my profile'
           active={activeItem === 'profile'}
           onClick={this.handleItemClick}
-        />
+        /> */}
         {/* </Menu.Menu> */}
       </Menu>
     )
