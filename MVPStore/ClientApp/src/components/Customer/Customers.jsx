@@ -12,7 +12,7 @@ function Customers() {
 
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 5;
-    const [paginatedCustomers,setpaginatedCustomers] = useState([]);
+    const [paginatedCustomers,setPaginatedCustomers] = useState([]);
     const pageCount = Customers? Math.ceil(Customers.length/pageSize) : 0;
     const pages = _.range(1,pageCount + 1);
   
@@ -21,7 +21,7 @@ function Customers() {
         setCurrentPage(pageNumber);
         const startIndex = (pageNumber - 1) * pageSize;
         const paginatedCustomers = _(Customers).slice(startIndex).take(pageSize).value();
-        setpaginatedCustomers(paginatedCustomers);  
+        setPaginatedCustomers(paginatedCustomers);  
     }
 
     const [loading, setLoading] = useState(false);  
@@ -31,7 +31,7 @@ function Customers() {
         .get("/customers/getCustomer")
         .then(({data}) => {
             setCustomers(data);
-            setpaginatedCustomers(_(data).slice(0).take(pageSize).value());
+            setPaginatedCustomers(_(data).slice(0).take(pageSize).value());
             setLoading(false);
         })
         .catch((err) => {
