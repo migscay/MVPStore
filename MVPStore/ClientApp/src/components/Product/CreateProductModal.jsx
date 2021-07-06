@@ -27,6 +27,7 @@ const CreateProductModal = (Props) => {
     })
     .catch((err) => {
       formValidation();
+      //debugger;
     });
   }; 
 

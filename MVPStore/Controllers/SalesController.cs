@@ -24,7 +24,7 @@ namespace MVPStore.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Sales>>> GetSales()
         {
-            return await _context.Sales.Include(s => s.Customer).Include(s => s.Product).Include(s => s.Store).ToListAsync();
+            return await _context.Sales.AsNoTracking().Include(s => s.Customer).Include(s => s.Product).Include(s => s.Store).ToListAsync();
         }
 
         // GET: api/Sales/5
