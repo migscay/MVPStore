@@ -2,6 +2,8 @@ import React, {useEffect,useState} from 'react';
 import axios from 'axios';
 import SalesTable from './SalesTable';
 import CreateSalesModal from './CreateSalesModal';
+import Pagination from '../Pagination';
+import _ from 'lodash';
 
 function Sales() {
 
@@ -10,6 +12,22 @@ function Sales() {
     const [Products, setProducts] = useState([]);
     const [Stores, setStores] = useState([]);
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = 5;
+    const [paginatedSales,setPaginatedSales] = useState([]);
+    const pageCount = Sales? Math.ceil(Sales.length/pageSize) : 0;
+    const pages = _.range(1,pageCount + 1);
+  
+    // Change page
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        const startIndex = (pageNumber - 1) * pageSize;
+        const paginatedSales = _(Sales).slice(startIndex).take(pageSize).value();
+        setPaginatedSales(paginatedSales);  
+    }
+
+    const [loading, setLoading] = useState(false);  
+
     useEffect(() => {
         fetchSales();
         fetchCustomers();
@@ -17,11 +35,14 @@ function Sales() {
         fetchStores();
     },[]);
  
-    const fetchSales = () => {
-        axios 
+    const fetchSales = async () => {
+        setLoading(true);
+        await axios 
         .get("/sales/getSales")
         .then(({data}) => {
             setSales(data);
+            setPaginatedSales(_(data).slice(0).take(pageSize).value());
+            setLoading(false);
         })
         .catch((err) => {
             console.log(err);
@@ -60,11 +81,16 @@ function Sales() {
             console.log(err);
         });
     }; 
-
+      
+    { if (loading)
+        return <h2>Loading...</h2>;
+    }
+ 
     return (
         <div>
             <CreateSalesModal Customers={Customers} Products={Products} Stores={Stores} fetchSales={fetchSales}/>
-            <SalesTable Customers={Customers} Products={Products} Stores={Stores} Sales={Sales} fetchSales={fetchSales}/>
+            <SalesTable Customers={Customers} Products={Products} Stores={Stores} Sales={paginatedSales} fetchSales={fetchSales}/>
+            <Pagination pages={pages} currentPage={currentPage} paginate={paginate} />
         </div>
     )
 }

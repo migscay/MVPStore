@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Menu } from 'semantic-ui-react'
+import { Menu,Segment,Sticky } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
 
 export class NavMenu extends Component {
@@ -13,7 +13,9 @@ export class NavMenu extends Component {
     const { activeItem } = this.state
 
     return (
-      <Menu secondary>
+      <Sticky>
+      <Segment inverted>
+      <Menu inverted secondary>
         {/* <Menu.Item
           as={NavLink} to="/"
           name='MVPStore'
@@ -53,6 +55,8 @@ export class NavMenu extends Component {
         /> */}
         {/* </Menu.Menu> */}
       </Menu>
+      </Segment>
+      </Sticky>
     )
   }
 }
