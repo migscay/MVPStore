@@ -2,7 +2,7 @@ import React, {useEffect,useState} from 'react';
 import axios from 'axios';
 import SalesTable from './SalesTable';
 import CreateSalesModal from './CreateSalesModal';
-import Pagination from '../Pagination';
+import { Pagination } from 'semantic-ui-react';
 import _ from 'lodash';
 
 function Sales() {
@@ -16,12 +16,11 @@ function Sales() {
     const pageSize = 5;
     const [paginatedSales,setPaginatedSales] = useState([]);
     const pageCount = Sales? Math.ceil(Sales.length/pageSize) : 0;
-    const pages = _.range(1,pageCount + 1);
   
     // Change page
-    const paginate = (pageNumber) => {
-        setCurrentPage(pageNumber);
-        const startIndex = (pageNumber - 1) * pageSize;
+    const paginate = (activePage) => {
+        setCurrentPage(activePage);
+        const startIndex = (activePage - 1) * pageSize;
         const paginatedSales = _(Sales).slice(startIndex).take(pageSize).value();
         setPaginatedSales(paginatedSales);  
     }
@@ -42,6 +41,7 @@ function Sales() {
         .then(({data}) => {
             setSales(data);
             setPaginatedSales(_(data).slice(0).take(pageSize).value());
+            setCurrentPage(1);
             setLoading(false);
         })
         .catch((err) => {
@@ -90,7 +90,11 @@ function Sales() {
         <div>
             <CreateSalesModal Customers={Customers} Products={Products} Stores={Stores} fetchSales={fetchSales}/>
             <SalesTable Customers={Customers} Products={Products} Stores={Stores} Sales={paginatedSales} fetchSales={fetchSales}/>
-            <Pagination pages={pages} currentPage={currentPage} paginate={paginate} />
+            <Pagination className="d-flex justify-content-center"
+                activePage={currentPage}
+                totalPages={pageCount}
+                onPageChange={(event, data) => paginate(data.activePage)}
+            />
         </div>
     )
 }

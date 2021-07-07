@@ -13,56 +13,77 @@ const CreateProductModal = (Props) => {
 
   const [open, setOpen] = useState(false);
 
+  const [product, setProduct] = useState({
+    name: "",
+    price: 0.00
+  })
+
   const [nameErrors,setNameErrors] = useState({});
   const [priceErrors,setPriceErrors] = useState({});
 
+  const [nameValid,setNameValid] = useState(false);
+  const [priceValid,setPriceValid] = useState(false);
   const createProduct = () => {
     axios.post("products/postproduct", {
-      name: name,
-      price: price
+      name: product.name,
+      price: product.price
     })
     .then((res) => {
       //reset views
       refreshViews();
     })
     .catch((err) => {
-      formValidation();
+      //formValidation();
       //debugger;
+      alert("Network Error Occurred, check connection")
     });
   }; 
 
-  const formValidation = () => { 
-    const nameErrors = {};
-    const priceErrors = {};
-    let isValid = true;
-    if (name.trim().length < 5) {
-      nameErrors.name = "Name should be at least 5 characters.";
-      isValid = false;
-    } else
-    if (name.trim().length > 100) {
-      nameErrors.name = "Name cannot be more than 100 characters.";
-      isValid = false;
-    } 
-    if (price < 0) {
-      priceErrors.price = "Price cannot be negative.";
-      isValid = false;
-    } else
-    if (price > 99999999.99) {
-      priceErrors.price = "Maximum price is 99999999.99.";
-      isValid = false;
-    } 
-    
-    setNameErrors(nameErrors);
-    setPriceErrors(priceErrors);
-    return isValid;
-  } 
+  const updateProduct = (field, value) => {
+    const fieldErrors = {};
+    switch(field) {
+      case 'name':
+        if (value.trim().length < 5) {
+          fieldErrors.name = "Name should be at least 5 characters.";
+        } else
+        if (value.trim().length > 100) {
+          fieldErrors.name = "Name cannot be more than 100 characters.";
+        }
+        if (Object.entries(fieldErrors).length === 0) {
+          setNameErrors({});
+          setNameValid(true);
+        } else {
+          setNameErrors(fieldErrors);
+          setNameValid(false)
+        }
+        break;
+      case 'price':
+        if (value < 0) {
+          fieldErrors.price = "Price cannot be negative.";
+        } else
+        if (price > 99999999.99) {
+          fieldErrors.price = "Maximum price is 99999999.99.";
+        } 
+        if (Object.entries(fieldErrors).length === 0) {
+          setPriceErrors({});
+          setPriceValid(true)
+        } else {
+          setPriceErrors(fieldErrors);
+          setPriceValid(false)
+        }
+    }
+    setProduct({
+      ...product,
+      [field]: value
+    })
+  }
 
   const refreshViews = () => {
     fetchProducts();
-    setName("");
-    setPrice(0.00);
-    setNameErrors({});
-    setPriceErrors({});
+    setProduct({
+      name: "",
+      price: 0.00
+    })
     setOpen(false);
   } 
 
@@ -79,7 +100,7 @@ const CreateProductModal = (Props) => {
           <div className='form-group'>
           <Form.Field>
               <label>Name</label>
-              <input name='name' placeholder='Enter Product Name' onChange={(e) => setName(e.target.value)}/>
+              <input name='name' placeholder='Enter Product Name' onChange={(e) => updateProduct("name", e.target.value)}/>
               {Object.keys(nameErrors).map((i) => { 
                 return <div style={{color:"red"}}>{nameErrors[i]}</div>
               })}
@@ -88,8 +109,7 @@ const CreateProductModal = (Props) => {
           <div className='form-group'>
             <Form.Field>
               <label>Price</label>
-              {/* <NumberFormat placeholder='0.00' thousandSeparator={true} prefix={'$'} onChange={(e) => setPrice(e.target.value)} /> */}
-              <input name='price' placeholder='Enter Product Price' onChange={(e) => setPrice(e.target.value)}/>
+              <input name='price' placeholder='Enter Product Price' onChange={(e) => updateProduct("price", e.target.value)}/>
               {Object.keys(priceErrors).map((i) => { 
                 return <div style={{color:"red"}}>{priceErrors[i]}</div>
               })}
@@ -99,7 +119,7 @@ const CreateProductModal = (Props) => {
       </Modal.Content>
       <Modal.Actions>
         <Button onClick={refreshViews}>Cancel</Button>
-        <Button color="blue" onClick={createProduct}><i className="save icon"></i>Submit</Button>
+        <Button color="blue" onClick={createProduct} disabled={!nameValid || !priceValid}><i className="save icon"></i>Submit</Button>
       </Modal.Actions>
     </Modal>
   )

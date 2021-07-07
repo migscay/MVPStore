@@ -2,7 +2,7 @@ import React, {useEffect,useState} from 'react';
 import axios from 'axios';
 import ProductTable from './ProductTable';
 import CreateProductModal from './CreateProductModal';
-import Pagination from '../Pagination';
+import { Pagination } from 'semantic-ui-react';
 import _ from 'lodash';
 
 function Products() {
@@ -13,7 +13,6 @@ function Products() {
     const pageSize = 5;
     const [paginatedProducts,setPaginatedProducts] = useState([]);
     const pageCount = Products? Math.ceil(Products.length/pageSize) : 0;
-    const pages = _.range(1,pageCount + 1);
   
     // Change page
     const paginate = (pageNumber) => {
@@ -32,6 +31,7 @@ function Products() {
         .then(({data}) => {
             setProducts(data);
             setPaginatedProducts(_(data).slice(0).take(pageSize).value());
+            setCurrentPage(1);
             setLoading(false);
         })
         .catch((err) => {
@@ -51,7 +51,11 @@ function Products() {
         <div>
             <CreateProductModal fetchProducts={fetchProducts}/>
             <ProductTable Products={paginatedProducts} fetchProducts={fetchProducts}/>
-            <Pagination pages={pages} currentPage={currentPage} paginate={paginate} />
+            <Pagination className="d-flex justify-content-center"
+                activePage={currentPage}
+                totalPages={pageCount}
+                onPageChange={(event, data) => paginate(data.activePage)}
+            />
         </div>
     )
 }

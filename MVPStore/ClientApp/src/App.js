@@ -8,8 +8,7 @@ import Customers  from './components/Customer/Customers';
 import Products  from './components/Product/Products';
 import Stores  from './components/Store/Stores';
 import Sales  from './components/Sales/Sales';
-
-import './custom.css'
+import './custom.css';
 
 export default class App extends Component {
   static displayName = App.name;

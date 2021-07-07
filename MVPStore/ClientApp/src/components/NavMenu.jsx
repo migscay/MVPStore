@@ -13,15 +13,8 @@ export class NavMenu extends Component {
     const { activeItem } = this.state
 
     return (
-      <Sticky>
-      <Segment inverted>
-      <Menu inverted secondary>
-        {/* <Menu.Item
-          as={NavLink} to="/"
-          name='MVPStore'
-          active={activeItem === 'home'}
-          onClick={this.handleItemClick}
-        /> */}
+      // <Segment inverted>
+      <Menu inverted>
         <Menu.Item
           as={NavLink} to="/customers"
           name='customers'
@@ -46,17 +39,8 @@ export class NavMenu extends Component {
           active={activeItem === 'sales'}
           onClick={this.handleItemClick}
         />
-{/* 
-        <Menu.Item
-          as={NavLink} to="/profile"
-          name='my profile'
-          active={activeItem === 'profile'}
-          onClick={this.handleItemClick}
-        /> */}
-        {/* </Menu.Menu> */}
       </Menu>
-      </Segment>
-      </Sticky>
+      // </Segment>
     )
   }
 }

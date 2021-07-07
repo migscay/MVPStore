@@ -12,3 +12,21 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.d-flex {
+  display: -ms-flexbox !important;
+  display: flex !important;
+}
+
+.justify-content-center {
+  -ms-flex-pack: center !important;
+  justify-content: center !important;
+}
+
+.ui.pagination.menu .active.item {
+  background-color: rgba(0,0,0,.30) !important;
+}
+
+.ui.secondary.menu .active.item {
+  background: rgba(0,0,0,.30) !important;
+}

@@ -116,7 +116,7 @@ const CreateCustomerModal = (Props) => {
       </Modal.Content>
       <Modal.Actions>
         <Button onClick={refreshViews}>Cancel</Button>
-        <Button color="blue" onClick={createCustomer} disabled={!nameValid && !addressValid}><i className="save icon"></i>Submit</Button>
+        <Button color="blue" onClick={createCustomer} disabled={!nameValid || !addressValid}><i className="save icon"></i>Submit</Button>
       </Modal.Actions>
     </Modal>
   )

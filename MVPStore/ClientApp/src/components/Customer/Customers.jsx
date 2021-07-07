@@ -2,7 +2,7 @@ import React, {useEffect,useState} from 'react';
 import axios from 'axios';
 import CustomerTable from './CustomerTable';
 import CreateCustomerModal from './CreateCustomerModal';
-import Pagination from '../Pagination';
+import { Pagination } from 'semantic-ui-react';
 import _ from 'lodash';
 
 
@@ -14,7 +14,6 @@ function Customers() {
     const pageSize = 5;
     const [paginatedCustomers,setPaginatedCustomers] = useState([]);
     const pageCount = Customers? Math.ceil(Customers.length/pageSize) : 0;
-    const pages = _.range(1,pageCount + 1);
   
     // Change page
     const paginate = (pageNumber) => {
@@ -32,6 +31,7 @@ function Customers() {
         .then(({data}) => {
             setCustomers(data);
             setPaginatedCustomers(_(data).slice(0).take(pageSize).value());
+            setCurrentPage(1);
             setLoading(false);
         })
         .catch((err) => {
@@ -51,7 +51,11 @@ function Customers() {
         <div>
             <CreateCustomerModal fetchCustomers={fetchCustomers}/>
             <CustomerTable Customers={paginatedCustomers} fetchCustomers={fetchCustomers}/>
-            <Pagination pages={pages} currentPage={currentPage} paginate={paginate} />
+            <Pagination className="d-flex justify-content-center"
+                activePage={currentPage}
+                totalPages={pageCount}
+                onPageChange={(event, data) => paginate(data.activePage)}
+            />
         </div>
     )
 }

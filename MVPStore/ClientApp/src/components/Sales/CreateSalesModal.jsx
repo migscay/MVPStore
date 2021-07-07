@@ -14,7 +14,7 @@ const CreateSalesModal = (Props) => {
     customerId: 0,
     productId: 0,
     storeId: 0,
-    datesold: null
+    dateSold: null
   })
   const [customerErrors,setCustomerErrors] = useState({});
   const [productErrors,setProductErrors] = useState({});
@@ -55,13 +55,11 @@ const CreateSalesModal = (Props) => {
 
   const createSale = () => {
 
-    let timeElapsed = Date.now();
-
     axios.post("sales/postsales", {
       customerId: sale.customerId,
       productId: sale.productId,
       storeId: sale.storeId,
-      dateSold: new Date()
+      dateSold: moment()
     })
       .then((res) => {
         //reset views
@@ -126,6 +124,16 @@ const CreateSalesModal = (Props) => {
       <Modal.Header>Create Sale</Modal.Header>
       <Modal.Content>
         <Form>
+        <div className='form-group'>
+          <Form.Field>
+              <label>Date Sold</label>
+              <input value={moment().format('MM/DD/YYYY')} readOnly/>
+{/* 
+              <input type='date' value={new Date()}
+                    onChange={(e) => updateSale("dateSold", e.target.value)} 
+              /> */}
+            </Form.Field>
+          </div>
           <div className='form-group'>
             <Form.Field>
               <label>Customer</label>
