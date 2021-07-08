@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { Table } from 'semantic-ui-react';
 import EditSaleModal from './EditSaleModal';
 import DeleteSaleModal from './DeleteSaleModal';

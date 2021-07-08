@@ -30,7 +30,7 @@ const CreateCustomerModal = (Props) => {
       refreshViews();
     })
     .catch((err) => {
-      //formValidation();
+      alert("Network Error Occurred, check connection")
     });
   }; 
 

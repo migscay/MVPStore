@@ -25,9 +25,10 @@ function Products() {
     const [loading, setLoading] = useState(false);  
 
 
-    const fetchProducts = () => {
-        axios 
-        .get("/products/getProduct")
+    const fetchProducts = async () => {
+        setLoading(true);
+        await axios 
+        .get("/products/getProductWithSales")
         .then(({data}) => {
             setProducts(data);
             setPaginatedProducts(_(data).slice(0).take(pageSize).value());

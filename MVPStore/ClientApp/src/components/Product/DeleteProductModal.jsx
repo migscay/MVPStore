@@ -30,7 +30,10 @@ const DeleteProductModal = (Props) => {
     open={open}
     trigger={<Button color="red"><i className="eraser icon"></i>Delete</Button>}
     >
-      <Modal.Header>Delete Product</Modal.Header>
+      <Modal.Header>
+        Delete Product
+        { Product.sales.length > 0 ? <div style={{color:"red"}}>Cannot delete Product with Sales.</div> : null }
+      </Modal.Header>
       <Modal.Content>
         <Form>
           <div className='form-group'>
@@ -49,7 +52,7 @@ const DeleteProductModal = (Props) => {
       </Modal.Content>
       <Modal.Actions>
         <Button onClick={() => setOpen(false)}>Cancel</Button>
-        <Button color="red" onClick={deleteProduct}>Confirm Delete</Button>
+        <Button color="red" onClick={deleteProduct} disabled={Product.sales.length > 0}>Confirm Delete</Button>
       </Modal.Actions>
     </Modal>
   )

@@ -8,9 +8,6 @@ const CreateProductModal = (Props) => {
 
   const {fetchProducts} = Props;
 
-  const [name,setName] = useState("");
-  const [price,setPrice] = useState(0.00);
-
   const [open, setOpen] = useState(false);
 
   const [product, setProduct] = useState({
@@ -33,8 +30,6 @@ const CreateProductModal = (Props) => {
       refreshViews();
     })
     .catch((err) => {
-      //formValidation();
-      //debugger;
       alert("Network Error Occurred, check connection")
     });
   }; 
@@ -61,7 +56,7 @@ const CreateProductModal = (Props) => {
         if (value < 0) {
           fieldErrors.price = "Price cannot be negative.";
         } else
-        if (price > 99999999.99) {
+        if (value > 99999999.99) {
           fieldErrors.price = "Maximum price is 99999999.99.";
         } 
         if (Object.entries(fieldErrors).length === 0) {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Menu,Segment,Sticky } from 'semantic-ui-react'
+import { Menu } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
 
 export class NavMenu extends Component {

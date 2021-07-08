@@ -24,11 +24,16 @@ function Stores() {
 
     const [loading, setLoading] = useState(false);  
 
-    const fetchStores = () => {
-        axios 
-        .get("/stores/getStore")
+    useEffect(() => {
+        fetchStores();
+    },[]);
+
+    const fetchStores =  async () => {
+        setLoading(true);
+        await axios 
+        .get("/stores/GetStoreWithSales")
         .then(({data}) => {
-            setStores(data);
+            setStores(data); 
             setPaginatedStores(_(data).slice(0).take(pageSize).value());
             setCurrentPage(1);
             setLoading(false);
@@ -37,15 +42,15 @@ function Stores() {
             console.log(err);
         });
     }; 
-    
-    useEffect(() => {
-        fetchStores();
-    },[]);
-    
+        
+    { if (loading)
+        return <h2>Loading...</h2>;
+    }
+
     return (
         <div>
             <CreateStoreModal fetchStores={fetchStores}/>
-            <StoreTable Stores={Stores} fetchStores={fetchStores}/>
+            <StoreTable Stores={paginatedStores} fetchStores={fetchStores}/>
             <Pagination className="d-flex justify-content-center"
                 activePage={currentPage}
                 totalPages={pageCount}

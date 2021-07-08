@@ -27,6 +27,12 @@ namespace MVPStore.Controllers
             return await _context.Customer.ToListAsync();
         }
 
+        // GET: api/Customers
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomerWithSales()
+        {
+            return await _context.Customer.Include(c => c.Sales).ToListAsync();
+        }
         // GET: api/Customers/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Customer>> GetCustomer(int id)

@@ -25,9 +25,10 @@ function Customers() {
 
     const [loading, setLoading] = useState(false);  
 
-    const fetchCustomers = () => {
-        axios 
-        .get("/customers/getCustomer")
+    const fetchCustomers = async () => {
+        setLoading(true);
+        await axios 
+        .get("/customers/GetCustomerWithSales")
         .then(({data}) => {
             setCustomers(data);
             setPaginatedCustomers(_(data).slice(0).take(pageSize).value());

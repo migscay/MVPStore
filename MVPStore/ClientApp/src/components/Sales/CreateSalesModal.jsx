@@ -16,9 +16,12 @@ const CreateSalesModal = (Props) => {
     storeId: 0,
     dateSold: null
   })
-  const [customerErrors,setCustomerErrors] = useState({});
-  const [productErrors,setProductErrors] = useState({});
-  const [storeErrors,setStoreErrors] = useState({});
+  const [customerErrors,setCustomerErrors] = useState({name: ""});
+  const [productErrors,setProductErrors] = useState({name: ""});
+  const [storeErrors,setStoreErrors] = useState({name: ""});
+  const [customerValid,setCustomerValid] = useState(false);
+  const [productValid,setProductValid] = useState(false);
+  const [storeValid,setStoreValid] = useState(false);
 
   useEffect(() => {
     updateCustomerDropdown();
@@ -54,20 +57,19 @@ const CreateSalesModal = (Props) => {
   };
 
   const createSale = () => {
-
     axios.post("sales/postsales", {
       customerId: sale.customerId,
       productId: sale.productId,
       storeId: sale.storeId,
-      dateSold: moment()
+      dateSold: moment().format('YYYY-MM-DD')
     })
-      .then((res) => {
+    .then((res) => {
         //reset views
-        refreshViews();
-      })
-      .catch((err) => {
-        formValidation();
-      });
+      refreshViews();
+    })
+    .catch((err) => {
+      alert("Network Error Occurred, check connection") 
+    });
   };
 
   const refreshViews = () => {
@@ -81,38 +83,84 @@ const CreateSalesModal = (Props) => {
     setCustomerErrors({});
     setProductErrors({});
     setStoreErrors({});
+    setCustomerValid(false);
+    setProductValid(false);
+    setStoreValid(false);
     setOpen(false);
   } 
 
-  const formValidation = () => { 
-    const customerErrors = {};
-    const productErrors = {};
-    const storeErrors = {};
-    if (sale.customerId === 0) {
-      customerErrors.name = "You must select a customer.";
-    } 
-    if (sale.productId === 0) {
-      productErrors.name = "You must select a product.";
-    } 
-    if (sale.storeId === 0) {
-      storeErrors.name = "You must select a store.";
-    } 
 
-    setCustomerErrors(customerErrors);
-    setProductErrors(productErrors);
-    setStoreErrors(storeErrors);
-  } 
 
   const updateSale = (field, value) => {
+  
     setSale({
       ...sale,
       [field]: value
     })
-  }
 
-  useEffect(() => {
-    console.log(sale);
-  }, [sale])
+    switch(field) {
+      case 'customerId':
+        const customerErrors = {};
+        setCustomerValid(true);
+        if (value === 0) {
+          customerErrors.name = "You must select a customer.";
+          setCustomerValid(false);
+        } else 
+        {
+          axios 
+          .get(`customers/GetCustomer/${value}`)
+          .then((res) => {
+          })
+          .catch((err) => {
+            customerErrors.name = "Customer no longer available.";
+            setCustomerValid(false);
+          });
+        }      
+        setCustomerErrors(customerErrors);
+        break;
+
+      case 'productId':
+        const productErrors = {};
+        setProductValid(true);
+        if (value === 0) {
+          productErrors.name = "You must select a product.";
+          setProductValid(false);
+        } else 
+        {
+          axios 
+          .get(`products/GetProduct/${value}`)
+          .then((res) => {
+          })
+          .catch((err) => {
+            productErrors.name = "Product no longer available.";
+            setProductValid(false);
+          });
+        }
+        setProductErrors(productErrors);
+        break;
+
+      case 'storeId':
+        const storeErrors = {};
+        setStoreValid(true);
+        if (value === 0) {
+          storeErrors.name = "You must select a store.";
+          setStoreValid(false);
+        } else
+        {
+          axios 
+          .get(`stores/GetStore/${value}`)
+          .then((res) => {
+          })
+          .catch((err) => {
+            storeErrors.name = "Store no longer available.";
+            setStoreValid(false);
+          });
+        }
+        setStoreErrors(storeErrors);
+        break;
+    }
+    
+  }
 
   return (
     <Modal
@@ -126,64 +174,60 @@ const CreateSalesModal = (Props) => {
         <Form>
         <div className='form-group'>
           <Form.Field>
-              <label>Date Sold</label>
-              <input value={moment().format('MM/DD/YYYY')} readOnly/>
-{/* 
-              <input type='date' value={new Date()}
-                    onChange={(e) => updateSale("dateSold", e.target.value)} 
-              /> */}
-            </Form.Field>
-          </div>
-          <div className='form-group'>
-            <Form.Field>
-              <label>Customer</label>
-              <Dropdown
-                placeholder='Select Customer'
-                fluid
-                selection
-                options={CustomersDropdown}
-                onChange={(event, { value }) => updateSale("customerId", value)}
-              /> 
-              {Object.keys(customerErrors).map((i) => { 
-                return <div style={{color:"red"}}>{customerErrors[i]}</div>
-              })}
-            </Form.Field>
-          </div>
-          <div className='form-group'>
-            <Form.Field>
-              <label>Product</label>
-              <Dropdown
-                placeholder='Select Product'
-                fluid
-                selection
-                options={ProductsDropdown}
-                onChange={(event, { value }) => updateSale("productId", value)}
-              /> 
-              {Object.keys(productErrors).map((i) => { 
-                return <div style={{color:"red"}}>{productErrors[i]}</div>
-              })}
-            </Form.Field>
-          </div>
-          <div className='form-group'>
-            <Form.Field>
-              <label>Store</label>
-              <Dropdown
-                placeholder='Select Store'
-                fluid
-                selection
-                options={StoresDropdown}
-                onChange={(event, { value }) => updateSale("storeId", value)}
-              /> 
-              {Object.keys(storeErrors).map((i) => { 
-                return <div style={{color:"red"}}>{storeErrors[i]}</div>
-              })}
-            </Form.Field>
-          </div>
+            <label>Date Sold</label>
+            <input value={moment().format('MM/DD/YYYY')} readOnly/>
+          </Form.Field>
+        </div>
+        <div className='form-group'>
+          <Form.Field>
+            <label>Customer</label>
+            <Dropdown
+              placeholder='Select Customer'
+              fluid
+              selection
+              options={CustomersDropdown}
+              onChange={(event, { value }) => updateSale("customerId", value)}
+            /> 
+            {Object.keys(customerErrors).map((i) => { 
+              return <div style={{color:"red"}}>{customerErrors[i]}</div>
+            })}
+          </Form.Field>
+        </div>
+        <div className='form-group'>
+          <Form.Field>
+            <label>Product</label>
+            <Dropdown
+              placeholder='Select Product'
+              fluid
+              selection
+              options={ProductsDropdown}
+              onChange={(event, { value }) => updateSale("productId", value)}
+            /> 
+            {Object.keys(productErrors).map((i) => { 
+              return <div style={{color:"red"}}>{productErrors[i]}</div>
+            })}
+          </Form.Field>
+        </div>
+        <div className='form-group'>
+          <Form.Field>
+            <label>Store</label>
+            <Dropdown
+              placeholder='Select Store'
+              fluid
+              selection
+              options={StoresDropdown}
+              onChange={(event, { value }) => updateSale("storeId", value)}
+            /> 
+            {Object.keys(storeErrors).map((i) => { 
+              return <div style={{color:"red"}}>{storeErrors[i]}</div>
+            })}
+          </Form.Field>
+        </div>
         </Form>
       </Modal.Content>
       <Modal.Actions>
         <Button onClick={refreshViews}>Cancel</Button>
-        <Button color="blue" onClick={createSale}><i className="save icon"></i>Submit</Button>
+        <Button color="blue" onClick={createSale} disabled={!customerValid || !productValid || !storeValid}><i className="save icon"></i>Submit</Button>
       </Modal.Actions>
     </Modal>
   )

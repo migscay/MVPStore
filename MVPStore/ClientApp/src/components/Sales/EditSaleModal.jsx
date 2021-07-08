@@ -29,13 +29,6 @@ const EditSaleModal = (Props) => {
     updateStoreDropdown();
   }, [Stores]);
 
-  // useEffect(() => {
-  //   updateSale("customerId", Sale.customer.id)
-  //   updateSale("productId", Sale.product.id)
-  //   updateSale("storeId", Sale.store.id)
-  //   updateSale("dateSold", Sale.dateSold)
-  // }, [Sale]);
-
   const updateCustomerDropdown = () => {
     let customersFromApi = Customers.map(customer => {
       return { text: customer.name, value: customer.id, key: customer.id }
@@ -78,7 +71,8 @@ const EditSaleModal = (Props) => {
             setOpen(false);
         })
         .catch((err) => {
-          //formValidation();
+          alert("Network Error Occurred, check connection")
+          setOpen(false);
         });
     }
     const resetViews = () => {
